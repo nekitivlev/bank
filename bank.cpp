@@ -10,7 +10,7 @@ user::user(std::string const &name_) : username(name_) {
 void user::transfer(user &counterparty,
                     int amount_xts,
                     const std::string &comment) {
-    std::unique_lock l(m_m);
+    std::scoped_lock l(m_m, counterparty.m_m);
     if (amount_xts > user_balance_xts) {
         throw not_enough_funds_error();
     } else {
